@@ -5,7 +5,7 @@ EE_ASM_DIR = embed/
 EE_SRC_DIR = src/
 EE_OBJS_DIR = obj/
 EE_BIN = bin/patch_loader_unc.elf
-EE_BIN_PKD = bin/patch_loader.elf
+EE_BIN_PKD = bin/PPC-Monitor_Loader.ELF
 EE_OBJS = $(addprefix obj/, patch_loader.o patch.o)
 
 NEWLIB_NANO = 1
@@ -26,12 +26,14 @@ clean::
 $(EE_BIN_PKD): $(EE_BIN)
 	ps2-packer $< $@
 
-$(EE_SRC_DIR)patch.c: $(PATCH_DIR)/bin/patch.elf
-	$(DIR_GUARD)
-	$(PPC_TOOL_PREFIX)objcopy -O binary $(PATCH_DIR)/bin/patch.elf $(PATCH_DIR)/bin/patch.bin
-	$(BIN2C) $(PATCH_DIR)/bin/patch.bin $(EE_SRC_DIR)patch.c patch_bin
+$(PATCH_DIR)/bin/patch.bin: $(PATCH_DIR)/bin/patch.elf
+	$(PPC_TOOL_PREFIX)objcopy -O binary $< $@
 
-$(EE_OBJS_DIR)%.o: $(EE_SRC_DIR)%.c | $(EE_OBJS_DIR)
+$(EE_SRC_DIR)patch.c: $(PATCH_DIR)/bin/patch.bin
+	$(BIN2C) $< $@ patch_bin
+
+$(EE_OBJS_DIR)%.o: $(EE_SRC_DIR)%.c
+	$(DIR_GUARD)
 	$(EE_CC) $(EE_CFLAGS) $(EE_INCS) -c $< -o $@
 
 include $(PS2SDK)/samples/Makefile.pref
