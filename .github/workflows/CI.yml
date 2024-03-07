@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v*'
+    paths:
+      - 'buildscripts/**'
+      - 'patch/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: ps2dev/ps2dev:latest
+    steps:
+
+      - name: Install dependencies
+        run: |
+          apk add build-base git
+
+      - uses: actions/checkout@v3
+      - run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch --prune --unshallow
+
+      - name: Compile PPC Toolchain
+        run: |
+          chmod +x ./buildscripts/toolchain/*.sh
+          ./buildscripts/toolchain/001-binutils.sh
+          ./buildscripts/toolchain/002-gcc-stage1.sh
+
+      - name: Compile build
+        run: |
+          make clean all
+
+      - name: Upload artifacts
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: PS2-Loader
+          path: |
+            patch_loader/bin/*.ELF
+
+      - name: Create release
+        if: github.ref == 'refs/heads/main'
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          title: "Latest development build"
+          files: |
+            patch_loader/bin/*.ELF
