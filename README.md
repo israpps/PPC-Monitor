@@ -21,18 +21,19 @@
 ### Building:
 1. Install PS2SDK build requirements if you haven't already. (gcc/clang, make, cmake, patch, git, etc)
 2. Make sure the PS2DEV environment variable is set. The toolchain buildscripts will install to the PS2DEV directory
-3. Build binutils for PPC with 001-binutils.sh 
+3. Build binutils and GCC for PPC either by doing 
+```sh
+make toolchain
+```
+or running the following scripts
 ```sh
 ./buildscripts/toolchain/001-binutils.sh
-```
-4. Build GCC for PPC with 002-gcc-stage1.sh 
-```sh
 ./buildscripts/toolchain/002-gcc-stage1.sh
 ```
-5. Once the toolchain is built and installed you can simply run `make` in the root directory and both the patch and patch loader will be built  
+4. Once the toolchain is built and installed you can simply run `make` in the root directory and both the patch and patch loader will be built  
 you may need to add `$PS2DEV/powerpc/bin` to your `$PATH`
-6. Open a serial monitor of your choosing and set the baud rate to 57600. When the PS2 is powered on or reset "D E C K A R D compiled xxxxx" should appear in the serial monitor. If it does not, check your connection and ensure the baud is set correctly.
-7. Run patch_loader.elf via ps2link or any other means of launching homebrew. You should see the following in your serial monitor:
+5. Open a serial monitor of your choosing and set the baud rate to 57600. When the PS2 is powered on or reset "D E C K A R D compiled xxxxx" should appear in the serial monitor. If it does not, check your connection and ensure the baud is set correctly.
+6. Run patch_loader.elf via ps2link or any other means of launching homebrew. You should see the following in your serial monitor:
 ```log
 LUT resized and relocated
 Welcome to PPC-MON v0.1
