@@ -4,8 +4,8 @@ title: SDRAM Controller
 parent: PowerPC miscelaneous stuff
 ---
 
+> The SDRAM controller has not been explored much and most of the information about it comes from [this uboot fork](https://git.ti.com/cgit/glsdk/glsdk-u-boot/tree/arch/powerpc/include/asm/ppc4xx-sdram.h):
 {: .highlight }
-The SDRAM controller has not been explored much and most of the information about it comes from [this uboot fork](https://git.ti.com/cgit/glsdk/glsdk-u-boot/tree/arch/powerpc/include/asm/ppc4xx-sdram.h):
 
 ```md
 =============================================================================
