@@ -71,8 +71,8 @@ purposes. `PARAM_MIPS_DCACHE_ON` is used to swap between two sets of TLB entries
 One set has caching enabled, while the other has caching disabled.
 
 ### IOP Devices
-Several devices have special handlers that will patch values if specific conditions are met. The "IOP Device Quirks" 
-folder contains the devices that have been documented thus far.
+Several devices have special handlers that will patch values if specific conditions are met.  
+See [IOP Device Quirks](./docs/IOP_devquirck/IOP_device_quircks.md) for information about the devices that have been documented so far.
 
 ## Software
 The **DECKARD** emulation software is responsible for fetching instructions, loading, and storing data for the APU, moving 
