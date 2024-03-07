@@ -1,6 +1,7 @@
 ---
 title: PowerPC Monitor
 layout: home
+nav_order: 1
 ---
 
 homebrew application operated via UART for the PowerPC CPU used by sony to replace the PS1 CPU on most slim models.
