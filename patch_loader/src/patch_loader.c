@@ -4,6 +4,7 @@
 #include <sifrpc.h>
 #include <debug.h>
 #include <loadfile.h>
+#include <iopcontrol.h>
 #include <sio.h>
 #include <dirent.h>
 #include <malloc.h>
@@ -24,17 +25,32 @@ extern u32	size_patch_bin;
 
 int main()
 {
+    int fd;
 	SifInitRpc(0);
-	
     SifLoadFileInit();
-
     SifIopReset("", 0);
     while (!SifIopSync()) {};
+    init_scr();
+    scr_setCursor(0);
+    scr_printf("\n\n------------------------- PowerPc Patch Installer v0.2 -------------------------\n"
+               "\tBy Qnox32. Maintained by El_isra\n"
+               "-------------------------------------\n\n");
 
-    printf("patch size: 0x%x\n", size_patch_bin);
+    if ((fd = open("rom0:DECKARD", O_RDONLY))<0) {
+        scr_setfontcolor(0x0000ff);
+        scr_printf("\tERROR: This PS2 is not a DECKARD model\n\taborting patch to avoid IOP crash\n");
+        sleep(5);
+        goto quit;
+    } else {close(fd);}
 
-    DI();               //disable interrupts on EE
-    ee_kmode_enter();   //enter kernel mode 
+    scr_printf("\t- patch size: 0x%x\n"
+               "\t- patch base address 0x%x\n"
+               "\t- patch branch address 0x%x\n",
+               size_patch_bin, PATCH_BASE_ADDR, PATCH_BRANCH_ADDR);
+
+    scr_printf("\tApplying patch..");
+    DI(); //disable interrupts on EE
+    ee_kmode_enter(); //enter kernel mode 
 
     //load patch into memory
     for (int i = 0; i < size_patch_bin; i++) {
@@ -52,18 +68,18 @@ int main()
 
     ee_kmode_exit();
 	EI();
-
+    scr_printf(". done!\n\tFlushCache()\n");
 	FlushCache(0);
 	FlushCache(2);
-
+    scr_printf("\tResetting IOP to start patch\n");
     //reset IOP to trigger branch / patch
     SifIopReset("", 0);
     while (!SifIopSync()) {};
+    scr_printf("\tpatch complete!\n");
 
-    nanosleep((const struct timespec[]){{2, 0}}, NULL);
+quit:
+    sleep(2);
 
-    printf("patch_loader complete\n");
-    
     return 0;
 }
 
