@@ -6,3 +6,7 @@ url: https://israpps.github.io/PPC-Monitor/
 color_scheme: dark
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template
+callouts:
+  note:
+    title: Note
+    color: purple
