@@ -4,8 +4,8 @@ title: Unknown device
 parent: PowerPC miscelaneous stuff
 ---
 
-{: .highlight }
 Unknown device found while probing DCRs, it has not been explored.
+{: .highlight }
 
 Indirect DCR access:
 - DCR-0x16: register number
