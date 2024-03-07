@@ -4,9 +4,15 @@ theme: just-the-docs
 
 url: https://israpps.github.io/PPC-Monitor/
 color_scheme: dark
-aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-templateS
+#aux_links:
+#  Download PowerPC Monitor: https://github.com/israpps/PPC-Monitor/releases
 
+
+#nav_external_links:
+#  - title: Download PowerPC Monitor
+#    url: https://github.com/israpps/PPC-Monitor/releases
+#  - title: PowerPC Monitor Source Code
+#    url: https://github.com/israpps/PPC-Monitor/
 
 kramdown:
   syntax_highlighter_opts:
