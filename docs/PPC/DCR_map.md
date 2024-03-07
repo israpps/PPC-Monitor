@@ -8,8 +8,8 @@ parent: PowerPC miscelaneous stuff
 > Special Thanks
 >
 > Special thanks to Wisi. This document builds upon their early DCR exploration
-> in the dpLibMod project:
-> https://www.psx-place.com/threads/hdd-for-ps2-scph75000x-later-models.30696/page-2#post-255399
+> in the [dpLibMod project](https://www.psx-place.com/threads/hdd-for-ps2-scph75000x-later-models.30696/page-2#post-255399)
+>
 
 ```md
 =============================================================================
