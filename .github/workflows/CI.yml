@@ -6,10 +6,9 @@ on:
       - '*'
     tags:
       - 'v*'
-    paths-ignore:
-      - '**.MD'
-      - '**.gitkeep'
-      - '**.gitignore'
+    paths:
+      - 'buildscripts/**'
+      - 'patch/**'
   workflow_dispatch:
 
 jobs:
@@ -27,9 +26,15 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --prune --unshallow
 
+      - name: Compile PPC Toolchain
+        run: |
+          chmod +x ./buildscripts/toolchain/*.sh
+          ./buildscripts/toolchain/001-binutils.sh
+          ./buildscripts/toolchain/002-gcc-stage1.sh
+
       - name: Compile build
         run: |
-          make -C patch_loader clean all
+          make clean all
 
       - name: Upload artifacts
         if: ${{ success() }}
