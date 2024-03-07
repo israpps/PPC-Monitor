@@ -5,7 +5,7 @@ EE_ASM_DIR = embed/
 EE_SRC_DIR = src/
 EE_OBJS_DIR = obj/
 EE_BIN = bin/patch_loader_unc.elf
-EE_BIN_PKD = bin/patch_loader.elf
+EE_BIN_PKD = bin/PPC-Monitor_Loader.ELF
 EE_OBJS = $(addprefix obj/, patch_loader.o patch.o)
 
 NEWLIB_NANO = 1

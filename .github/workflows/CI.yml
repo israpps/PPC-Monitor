@@ -29,7 +29,7 @@ jobs:
 
       - name: Compile build
         run: |
-          make clean all
+          make -C patch_loader clean all
 
       - name: Upload artifacts
         if: ${{ success() }}
@@ -37,7 +37,7 @@ jobs:
         with:
           name: PS2-Loader
           path: |
-            patch_loader/bin/*.elf
+            patch_loader/bin/*.ELF
 
       - name: Create release
         if: github.ref == 'refs/heads/main'
@@ -47,4 +47,4 @@ jobs:
           automatic_release_tag: "latest"
           title: "Latest development build"
           files: |
-            patch_loader/bin/*.elf
+            patch_loader/bin/*.ELF
