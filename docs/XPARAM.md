@@ -2,7 +2,7 @@
 layout: default
 title: PowerPC Patch Information
 description: IOP emulation compatibility modes
-nav_order: 3
+nav_order: 5
 ---
 The `XPARAM` IOP module writes **PARAM** values to `0xFFFE01a0` and `0xFFFE01a4`. 
 In the PPC store handler for these addresses copy the **PARAM** value to a 
@@ -18,7 +18,7 @@ bypassing the need to use the `rom0:XPARAM` IOP module wich was operated by `rom
 range: `0xbe09e0` - `0xbe0a24`
 
 | Value  | Name                             |
-|:-------|:---------------------------------|
+| ------ | -------------------------------- |
 | `0x0`  | `PARAM_MDEC_DELAY_CYCLE`         |
 | `0x4`  | `PARAM_SPU_INT_DELAY_LIMIT`      |
 | `0x8`  | `PARAM_SPU_INT_DELAY_PPC_COEFF`  |

@@ -42,7 +42,8 @@ there is a significant amount of unused space in each table. The patch provided 
 Additionally, there are no sanity checks on reads or writes within the `A00000`-`BFFFFF` address range, allowing any 
 IOP module running on a PPC-IOP PS2 to read and write to this region. `B00000` - `BFFFFF` are mapped as non executable.
 
-Memory Layout:
+#### Memory Layout:
+
 |   Virtual Address   |   Physical Address  |     Function     |          Size          |
 |---------------------|---------------------|------------------|------------------------|
 | `A00000` - `A0E1A4` | `A00000` - `A0E1A4` | DECKARD ELF code | (`0xE1A4`)  57.764 KB  |
