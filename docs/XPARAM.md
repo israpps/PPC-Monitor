@@ -7,7 +7,12 @@ nav_order: 5
 The `XPARAM` IOP module writes **PARAM** values to `0xFFFE01a0` and `0xFFFE01a4`.  
 In the PPC store handler for these addresses copy the **PARAM** value to a  
 struct in memory @ `0xbe09e0` - `0xbe0a24`. From there the values are used 
-by their respective functions. The XPARAM struct can written to directly  
+by their respective functions. The XPARAM struct can be written to directly  
+
+- `0xFFFE01a0` = index
+- `0xFFFE01a4` = value
+
+
 bypassing the need to use the `rom0:XPARAM` IOP module wich was operated by `rom0:PS2LOGO` on Sony's plans.  
 
 original design included a database of games that needed of XPARAMs to work.  
@@ -28,10 +33,6 @@ You can find copies of the two versions of the XPARAM database as well as some i
 
 you can find a list of the IDs for the games that added their own XPARAM modules in [this piece of code](https://github.com/ps2homebrew/Open-PS2-Loader/blob/master/src/xparam.c#L16-L51)
 
-
-
-`0xFFFE01a0` = index
-`0xFFFE01a4` = value
 
 ## XPARAM Struct Address
 
