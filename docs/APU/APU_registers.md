@@ -11,7 +11,7 @@ parent: PowerPC APU
 >
 {: .note-title }
 
-
+```
 ===============================================================================
 The APU appears to contain two separate register files.
 
@@ -303,3 +303,4 @@ DCR-0x22 = register value
 		the GTE may run at the same speed as the PPC core (440MHz).
 
 0x83-0xFF = Unknown.
+```
