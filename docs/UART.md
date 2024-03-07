@@ -1,7 +1,7 @@
 ---
 layout: default
 title: PowerPC UART
-nav_order: 2
+nav_order: 99
 ---
 
 # PPC-IOP UART

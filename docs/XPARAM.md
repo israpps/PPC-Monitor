@@ -1,14 +1,34 @@
 ---
 layout: default
-title: PowerPC Patch Information
-description: IOP emulation compatibility modes
+title: PowerPC XPARAM compatibility modes
 nav_order: 5
 ---
-The `XPARAM` IOP module writes **PARAM** values to `0xFFFE01a0` and `0xFFFE01a4`. 
-In the PPC store handler for these addresses copy the **PARAM** value to a 
-struct in memory @ `0xbe09e0` - `0xbe0a24`. From there the values are used
-by their respective functions. The XPARAM struct can written to directly
-bypassing the need to use the `rom0:XPARAM` IOP module wich was operated by `rom0:PS2LOGO` on Sony's plans.
+
+The `XPARAM` IOP module writes **PARAM** values to `0xFFFE01a0` and `0xFFFE01a4`.  
+In the PPC store handler for these addresses copy the **PARAM** value to a  
+struct in memory @ `0xbe09e0` - `0xbe0a24`. From there the values are used 
+by their respective functions. The XPARAM struct can written to directly  
+bypassing the need to use the `rom0:XPARAM` IOP module wich was operated by `rom0:PS2LOGO` on Sony's plans.  
+
+original design included a database of games that needed of XPARAMs to work.  
+aditionally, game's `SYSTEM.CNF` could provide their own XPARAM settings by adding an `PARAM2` entry. and the value passed had to be the XPARAM argumments followed by an MD5 hash. Disc params had higher priority than rom database params.
+
+
+SYSTEM.CNF example taken from Critical Velocity (`SLPS_255.32`):
+```ini
+BOOT2 = cdrom0:\SLPS_255.32;1
+VER = 1.01
+VMODE = NTSC
+PARAM2 = 0X10_0:812E98BD247B5EB74CD7A1F9EEDBF355
+```
+
+[^1]: PS3/PS4_emulators: on PS3/PS4 emulated PS2. the `SYSTEM.CNF` entry looked for is `PARAM4`, and the module was renamed to `rom0:XPARAM2`.
+
+You can find copies of the two versions of the XPARAM database as well as some information about them [here](https://github.com/ps2homebrew/Open-PS2-Loader/tree/master/notes/xparam)
+
+you can find a list of the IDs for the games that added their own XPARAM modules in [this piece of code](https://github.com/ps2homebrew/Open-PS2-Loader/blob/master/src/xparam.c#L16-L51)
+
+
 
 `0xFFFE01a0` = index
 `0xFFFE01a4` = value
