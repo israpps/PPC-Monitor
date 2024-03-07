@@ -68,3 +68,9 @@ int main()
 }
 
 
+
+void _libcglue_timezone_update() {}
+void _libcglue_init() {}
+void _libcglue_deinit() {}
+//DISABLE_PATCHED_FUNCTIONS();
+PS2_DISABLE_AUTOSTART_PTHREAD();
