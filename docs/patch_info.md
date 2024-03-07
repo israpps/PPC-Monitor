@@ -4,6 +4,7 @@ title: PowerPC Patch Information
 nav_order: 3
 ---
 
+# Patch Information
 
 Patch loading can be accomplished in multiple ways. Wisi's patch loader used  
 in their dplibmod project copied the patch from EE memory to PPC-IOP mem and  

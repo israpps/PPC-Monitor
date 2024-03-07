@@ -4,4 +4,4 @@ title: IOP Device Quircks
 has_children: true
 ---
 
-# IOP Device Quircks
+IOP Device Quircks
