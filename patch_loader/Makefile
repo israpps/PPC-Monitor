@@ -1,12 +1,17 @@
 BUILD_SCRIPTS := $(abspath $(CURDIR)/../buildscripts)
 PATCH_DIR := $(abspath $(CURDIR)/../patch)
+MAJOR = 0
+MINOR = 2
 
 EE_ASM_DIR = embed/
 EE_SRC_DIR = src/
 EE_OBJS_DIR = obj/
 EE_BIN = bin/patch_loader_unc.elf
-EE_BIN_PKD = bin/PPC-Monitor_Loader.ELF
+EE_BIN_PKD = bin/PPC-Monitor_Loader-v$(MAJOR).$(MINOR).ELF
 EE_OBJS = $(addprefix obj/, patch_loader.o patch.o)
+
+
+EE_CFLAGS += "-DMAJOR=$(MAJOR)" "-DMINOR=$(MINOR)"
 
 NEWLIB_NANO = 1
 EE_LDFLAGS += -Wl,-zmax-page-size=128 -L./libppcpatch/

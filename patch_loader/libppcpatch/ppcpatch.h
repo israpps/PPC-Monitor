@@ -1,6 +1,7 @@
 #ifndef PPCPATCH_H
 #define PPCPATCH_H
 #include <tamtypes.h>
+#include <errno.h>
 
 
 #ifndef PPCPATCH_IOP_BASE_ADDR
