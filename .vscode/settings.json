@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "dirent.h": "c",
+        "ppcpatch.h": "c",
+        "unistd.h": "c"
+    }
+}

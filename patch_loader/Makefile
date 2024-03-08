@@ -9,19 +9,19 @@ EE_BIN_PKD = bin/PPC-Monitor_Loader.ELF
 EE_OBJS = $(addprefix obj/, patch_loader.o patch.o)
 
 NEWLIB_NANO = 1
-EE_LIBS += -ldebug
-EE_LDFLAGS += -Wl,-zmax-page-size=128
+EE_LDFLAGS += -Wl,-zmax-page-size=128 -L./libppcpatch/
+EE_LIBS += -ldebug -lppcpatch
 
-BIN2C= $(PS2SDK)/bin/bin2c
-#prep patch before building patch_loader
-all: $(EE_BIN_PKD)
-	$(MAKE) $(EE_BIN)
+all:
+	$(MAKE) -C libppcpatch
+	$(MAKE) $(EE_BIN_PKD)
 
 clean::
-	rm -f obj/*
-	rm -f embed/*
-	rm -f *.map
-	rm -f $(EE_BIN) $(EE_BIN_PKD)
+	@$(MAKE) -C libppcpatch clean
+	@rm -f obj/*
+	@rm -f embed/*
+	@rm -f *.map
+	@rm -f $(EE_BIN) $(EE_BIN_PKD)
 
 $(EE_BIN_PKD): $(EE_BIN)
 	ps2-packer $< $@
@@ -30,7 +30,7 @@ $(PATCH_DIR)/bin/patch.bin: $(PATCH_DIR)/bin/patch.elf
 	$(PPC_TOOL_PREFIX)objcopy -O binary $< $@
 
 $(EE_SRC_DIR)patch.c: $(PATCH_DIR)/bin/patch.bin
-	$(BIN2C) $< $@ patch_bin
+	$(PS2SDK)/bin/bin2c $< $@ patch_bin
 
 $(EE_OBJS_DIR)%.o: $(EE_SRC_DIR)%.c
 	$(DIR_GUARD)
