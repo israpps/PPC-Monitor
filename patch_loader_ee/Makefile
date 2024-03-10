@@ -11,7 +11,7 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 # Add embedded IRX files
 EE_IRX_FILES =\
-	patch_loader.irx \
+	ppcpatchman.irx \
 
 EE_IRX_OBJS = $(addsuffix _irx.o, $(basename $(EE_IRX_FILES)))
 EE_OBJS += $(EE_IRX_OBJS)
