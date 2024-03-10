@@ -133,13 +133,9 @@ void patch_lut()
 	printf("Patch: Load and Store LUTs resized and relocated\n");
 }
 
-void __attribute__((section(".text_entry"))) _start(void)
+int __attribute__((section(".text_entry"))) _start(void)
 {
     inval_DI_cache(0xA14000, 1);
-
-	//restore original instruction
-	*(uint32_t*)(0xa07434) = *(uint32_t*)(0xA14000);
-	inval_DI_cache(0xa07434, 1);
 
 	//resize and move LUT
 	patch_lut();
@@ -166,7 +162,5 @@ void __attribute__((section(".text_entry"))) _start(void)
 	//start PPC-MON
 	pm_start();
 
-	//set I_MASK since we skipped the code that normally does this
-	*(volatile uint32_t*)(0x1f801074) = *(uint32_t*)(0xbe0408) | 0xf900008c;
-	return;
+	return 0xFEEDFACE;
 }

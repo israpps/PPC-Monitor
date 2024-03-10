@@ -350,97 +350,106 @@ static void serial_scr_down()
     }
 }
 
-static void pm_rx()
+void pm_rx()
 {
     char c;
 
-    //Schedule RX function to run every n MIPS cycles (2000 by default)
-    add_event(pm_settings.event_cycles, &pm_rx, 0);
+    do {
+        //Schedule RX function to run every n MIPS cycles (2000 by default)
+        if (debug_ppc_config.halted == 0)
+            add_event(pm_settings.event_cycles, &pm_rx, 0);
 
-    //Poll UART status register
-    while (*(uint8_t*)(0x01000205) & 1 != 0) {
+        //Poll UART status register
+        while (*(uint8_t*)(0x01000205) & 1 != 0) {
 
-        //Read char from UART FIFO
-        c = *(char*)(0x01000200);
+            //Read char from UART FIFO
+            c = *(char*)(0x01000200);
 
-        switch (c)
-        {
-        //CR (Enter)
-        case '\r':
-            printf("\r\n");
+            switch (c)
+            {
+            //CR (Enter)
+            case '\r':
+                printf("\r\n");
 
-            //term str
-            rx_buf[rx_idx] = '\0';
-    
-			//Process command
-            pm_handle_cmd();
-
-            //Copy to prev line buffer if not already present
-            if (strcmp(prev_lines[scr_idx].str, rx_buf) != 0) {
-                strcpy(prev_lines[line_idx].str, rx_buf);
-                prev_lines[line_idx].len = rx_idx;
-
-                line_idx++;
-
-                if (line_idx > SERIAL_SCROLLBACK_LIMIT)
-                    line_idx = 0;
-            }
-            serial_print_newline();
-        break;
+                //term str
+                rx_buf[rx_idx] = '\0';
         
-        //DEL (backspace)
-        case 0x7F:
-            if (rx_idx != 0) {
-                rx_buf[rx_idx-1] = '\0';
-                rx_idx--;
-                printf("\b \b"); 
-            }
-        break;
+                //Process command
+                pm_handle_cmd();
 
-        //EXT (CTRL+C)
-        case 0x3:
-            serial_print_newline();
-        break;
+                //Copy to prev line buffer if not already present
+                if (strcmp(prev_lines[scr_idx].str, rx_buf) != 0) {
+                    strcpy(prev_lines[line_idx].str, rx_buf);
+                    prev_lines[line_idx].len = rx_idx;
 
-        //Partial escape sequences, do nothing
-        case '[':
-        break;
+                    line_idx++;
 
-        case 0x1B:
-        break;
-        
-        default:
-            //Escape sequences
-            if (prev_char == '[') {
-                //Up arrow
-                if (c == 'A') {
-                    serial_scr_up();
-                //Down arrow
-                } else if (c == 'B') {
-                    serial_scr_down();
-                //Right arrow
-                } else if (c == 'C') {
-
-                //Left arrow
-                } else if (c == 'D') {
-
+                    if (line_idx > SERIAL_SCROLLBACK_LIMIT)
+                        line_idx = 0;
                 }
-            //Add char to buffer
-            } else {
-                if (rx_idx < RX_BUFFER_SIZE) {
-                    printf("%c", c); //echo char back
-                    rx_buf[rx_idx] = c;
-                    rx_idx++;
+                serial_print_newline();
+            break;
+            
+            //DEL (backspace)
+            case 0x7F:
+                if (rx_idx != 0) {
+                    rx_buf[rx_idx-1] = '\0';
+                    rx_idx--;
+                    printf("\b \b"); 
+                }
+            break;
+
+            //EXT (CTRL+C)
+            case 0x3:
+                //Disable DAC2R and DAC2W event bits in DBCR0
+                debug_reg_ppc_sp_set(0x134, (debug_reg_ppc_sp_get(0x134) & ~(3 << 16)));
+                //Clear DAC2 address
+                debug_reg_ppc_sp_set(0x13D, 0x0);
+                
+                serial_print_newline();
+            break;
+
+            //Partial escape sequences, do nothing
+            case '[':
+            break;
+
+            case 0x1B:
+            break;
+            
+            default:
+                //Escape sequences
+                if (prev_char == '[') {
+                    //Up arrow
+                    if (c == 'A') {
+                        serial_scr_up();
+                    //Down arrow
+                    } else if (c == 'B') {
+                        serial_scr_down();
+                    //Right arrow
+                    } else if (c == 'C') {
+
+                    //Left arrow
+                    } else if (c == 'D') {
+
+                    }
+                //Add char to buffer
                 } else {
-                    printf("\nBuffer full, command discarded\n");
-                    serial_print_newline();
+                    if (rx_idx < RX_BUFFER_SIZE) {
+                        printf("%c", c); //echo char back
+                        rx_buf[rx_idx] = c;
+                        rx_idx++;
+                    } else {
+                        printf("\nBuffer full, command discarded\n");
+                        serial_print_newline();
+                    }
                 }
+            break;
             }
-        break;
+
+            prev_char = c;
         }
 
-        prev_char = c;
-    }
+    } while (debug_ppc_config.halted);
 }
 
 void pm_start()
@@ -469,12 +478,19 @@ void pm_start()
     debug_uart_init(pm_settings.baud);
 
     //Register PPC-MON core commands, mem, reg, mips, etc
-    pm_register_cmds(&pm_core_cmds, 11);
+    pm_register_cmds(&pm_core_cmds, 12);
 
 	//Preserve PPC-MON RX event through mode reset (PS2 <-> PS1)
 	debug_run_on_reset(&pm_rx); 
 
-	printf("\nWelcome to PPC-MON v0.2\n");
+    //Init debug_ppc_config values
+    debug_ppc_config.hooked = 0;
+    debug_ppc_config.halted = 0;
+    debug_ppc_config.addr = 0;
+    debug_ppc_config.rw = 0;
+    debug_ppc_config.wb = 0;
+
+	printf("\nWelcome to PPC-MON v0.2.1\n");
 	printf(">");
 
     //Start RX func

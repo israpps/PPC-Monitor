@@ -6,6 +6,9 @@
 
 #include <stdint.h>
 
+#include "cache.h"
+
+
 #include "debug.h"
 
 /* Memory commands:
@@ -1175,6 +1178,7 @@ static int command_ppc()
         printf("DBCR1:  0x%x\n", debug_reg_ppc_sp_get(0x135));
         printf("DBCR2:  0x%x\n", debug_reg_ppc_sp_get(0x136));
         printf("DBDR:   0X%x\n", debug_reg_ppc_sp_get(0x3F3));
+        printf("DAC2:   0x%x\n", debug_reg_ppc_sp_get(0x13D));
         
         /*
         //Instruction Cache Normal Victim 0 - 3
@@ -1205,6 +1209,82 @@ static int command_ppc()
     } else {
         printf("Invalid action: %c\n", *drw);
         return -1;
+    }
+}
+
+/* Debug commands:
+*  debug <w|b> <r|w|b> <address>
+*  debug <c>
+*
+*  arg1: <c|w|b>
+*  arg2: <r|w|b>
+*  arg3: <address>
+*/
+static void command_debug()
+{
+    char *action = pm_parser_get_argv_ptr(1);
+    char *option = pm_parser_get_argv_ptr(2);
+
+    uint32_t addr = pm_parser_get_argv_dec(3);
+
+    if (debug_ppc_config.hooked == 0) {
+        printf("IVOR15 hook not installed, installing now\n");
+        debug_hook_ivor15();
+    }
+
+    switch (*action)
+    {
+    //Clear
+    case 'c':
+        //Disable DAC2R and DAC2W event bits in DBCR0
+        debug_reg_ppc_sp_set(0x134, (debug_reg_ppc_sp_get(0x134) & ~(3 << 16)));
+        //Clear DAC2 address
+        debug_reg_ppc_sp_set(0x13D, 0x0);
+        break;
+    
+    //Watch
+    case 'w':
+        debug_ppc_config.wb = 0;
+        debug_reg_ppc_sp_set(0x13D, addr);
+
+        if (*option == 'r') {
+            debug_reg_ppc_sp_set(0x134, debug_reg_ppc_sp_get(0x134) | 0x20000);
+        } else if (*option == 'w') {
+            debug_reg_ppc_sp_set(0x134, debug_reg_ppc_sp_get(0x134) | 0x10000);
+        } else if (*option == 'b') {
+            debug_reg_ppc_sp_set(0x134, debug_reg_ppc_sp_get(0x134) | 0x30000);
+        }
+        break;
+
+    //Break
+    case 'b':
+        debug_ppc_config.wb = 1;
+        debug_reg_ppc_sp_set(0x13D, addr);
+
+        if (*option == 'r') {
+            debug_reg_ppc_sp_set(0x134, debug_reg_ppc_sp_get(0x134) | 0x20000);
+        } else if (*option == 'w') {
+            debug_reg_ppc_sp_set(0x134, debug_reg_ppc_sp_get(0x134) | 0x10000);
+        } else if (*option == 'b') {
+            debug_reg_ppc_sp_set(0x134, debug_reg_ppc_sp_get(0x134) | 0x30000);
+        }
+        break;
+
+    //Halt
+    case 'h':
+        printf("Halting, use 'debug r' to resume or 'debug c' to clear debug intr settings\n");
+        debug_ppc_config.halted = 1;
+        break;
+
+    //Resume
+    case 'r':
+        printf("Resuming\n");
+        debug_ppc_config.halted = 0;
+
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -1315,5 +1395,11 @@ pm_cmd_t pm_core_cmds[] = {
         .name = "ppc",
         .help = "ppc <d|r|w>",
         .func = &command_ppc
+    },
+    {
+        .name = "debug",
+        .help = "debug <w|b> <r|w|b> <address>",
+                "debug <c>",
+        .func = &command_debug
     }
 };
