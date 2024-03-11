@@ -4,7 +4,7 @@ ENTRY(_start);
 
 SECTIONS {
 
-	. = 0xA14004;
+	. = 0xA14000;
 
 	.text : {
 		*(.text_entry)
