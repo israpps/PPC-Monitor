@@ -4,6 +4,7 @@
 #include <sifrpc.h>
 #include <tamtypes.h>
 #include <loadfile.h>
+#include <sbv_patches.h>
 
 extern unsigned char ppcpatchman_irx[];
 extern unsigned int size_ppcpatchman_irx;
@@ -17,6 +18,10 @@ int main()
 	SifIopReset("", 0);
 	while (!SifIopSync()) {
 	};
+	SifInitIopHeap();
+	SifLoadFileInit();
+	sbv_patch_enable_lmb();  // The old IOP kernel has no support for LoadModuleBuffer. Apply the patch to enable it.
+	sbv_patch_disable_prefix_check();
 	init_scr();
 	scr_setCursor(0);
 	DPRINTF("\n\n------------------------- PowerPc Patch Installer v%d.%d -------------------------\n"
