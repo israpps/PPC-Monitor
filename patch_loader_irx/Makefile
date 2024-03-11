@@ -19,6 +19,9 @@ $(PATCH_DIR)/bin/patch.bin: $(PATCH_DIR)/bin/patch.elf
 patch.c: $(PATCH_DIR)/bin/patch.bin
 	$(PS2SDK)/bin/bin2c $< $@ patch_bin
 
+IOP_CFLAGS += -DIRX_VMAJOR=$(PPC_MAJOR) -DIRX_VMINOR=$(PPC_MINOR) -DIRX_REV=$(PPC_REVISION)
+
+include $(PATCH_DIR)/version.make
 include $(PS2SDK)/Defs.make
 include $(PS2SDK)/samples/Makefile.pref
 include $(PS2SDK)/samples/Makefile.iopglobal

@@ -4,3 +4,4 @@
 *.irx
 *_irx.c
 patch_loader_irx/patch.c
+release/

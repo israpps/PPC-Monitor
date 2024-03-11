@@ -1,5 +1,5 @@
+PATCH_DIR := $(abspath $(CURDIR)/../patch)
 EE_BIN = ee_loader.elf
-
 EE_OBJS_DIR = obj/
 EE_SRC_DIR = src/
 EE_ASM_DIR = asm/
@@ -30,5 +30,8 @@ all: $(EE_BIN)
 clean:
 	rm -f -r $(EE_OBJS) $(EE_BIN) *_irx.c
 
+EE_CFLAGS += -DMAJOR=$(PPC_MAJOR) -DMINOR=$(PPC_MINOR) -DREVISION=$(PPC_REVISION) -DGITHASH=\"$(COMMIT_HASH)\"
+
+include $(PATCH_DIR)/version.make
 include $(PS2SDK)/samples/Makefile.pref
 include $(PS2SDK)/samples/Makefile.eeglobal

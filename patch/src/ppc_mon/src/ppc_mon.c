@@ -490,7 +490,7 @@ void pm_start()
     debug_ppc_config.rw = 0;
     debug_ppc_config.wb = 0;
 
-	printf("\nWelcome to PPC-MON v0.2.1\n");
+	printf("\nWelcome to PPC-MON v%d.%d.1\n", MAJOR, MINOR);
 	printf(">");
 
     //Start RX func
