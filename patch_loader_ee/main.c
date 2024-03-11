@@ -32,3 +32,12 @@ int main()
 	sleep(2);
 	return 0;
 }
+
+#ifndef SKIP_SIZE_REDUCTION
+void _libcglue_timezone_update() {}
+void _libcglue_init() {}
+void _libcglue_deinit() {}
+DISABLE_PATCHED_FUNCTIONS();
+DISABLE_EXTRA_TIMERS_FUNCTIONS();
+PS2_DISABLE_AUTOSTART_PTHREAD();
+#endif
