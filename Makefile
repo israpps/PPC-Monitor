@@ -19,3 +19,5 @@ toolchain:
 include ./patch/version.make
 version:
 	@printf "v%d.%d rev %d - commit %s\n" $(PPC_MAJOR) $(PPC_MINOR) $(PPC_REVISION) $(COMMIT_HASH)
+vershort:
+	@printf "v%d.%d.%d\n" $(PPC_MAJOR) $(PPC_MINOR) $(PPC_REVISION)

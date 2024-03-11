@@ -5,3 +5,5 @@
 *_irx.c
 patch_loader_irx/patch.c
 release/
+*.zip
+/PPC-Monitor-v*/

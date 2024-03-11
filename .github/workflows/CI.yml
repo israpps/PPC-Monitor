@@ -31,10 +31,13 @@ jobs:
           mkdir -p release/raw_binaries
           cp patch_loader_irx/irx/ppcpatchman.irx release/ppcpatchman.irx
           cp patch_loader_ee/ee_loader.elf release/PPC-Monitor-Loader.elf
-          patch/bin/patch.elf release/raw_binaries/patch.elf
-          patch/bin/patch.bin release/raw_binaries/patch.bin
+          cp patch/bin/patch.elf release/raw_binaries/patch.elf
+          cp patch/bin/patch.bin release/raw_binaries/patch.bin
           cp LICENSE release/LICENSE
           cp README.md release/README.md
+          make version>release/VERSION.TXT
+          mv release "PPC-Monitor-$(make vershort)"
+          zip -r "PPC-Monitor-$(make vershort).zip" "PPC-Monitor-$(make vershort)"/*
 
       - name: Upload artifacts
         if: ${{ success() }}
