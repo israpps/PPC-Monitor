@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <debug.h>
+#include <iopcontrol.h>
+#include <sifrpc.h>
 #include <tamtypes.h>
 #include <loadfile.h>
 
