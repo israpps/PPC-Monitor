@@ -52,10 +52,12 @@ int module_start(int argc, char *argv[])
 	// Trigger jump to patch by reading from 0x1f8fff60
 	rv = *(u32 *)(0x1f8fff60);
 
-	if (rv == 0xFEEDFACE)
+	if (rv == 0xFEEDFACE) {
 		printf(MODNAME ": Patch trigger successful: 0x%x\n", rv);
-	else
+	} else {
 		printf(MODNAME ": Patch trigger failed: 0x%x\n", rv);
+		return -3;
+	}
 	return MODULE_NO_RESIDENT_END;
 }
 
