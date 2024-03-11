@@ -44,10 +44,6 @@ int module_start(int argc, char *argv[])
 		}
 	}
 
-	// 0xabfbd8 contains function ptr for loads from 0x1f8fff60 (unused)
-	printf(MODNAME ": Backing up func ptr @ 0xabfbd8, value = 0x%x\n", *(u32 *)(0xabfbd8));
-	u32 backup = *(vu32 *)(0xabfbd8);
-
 	// Replace func ptr for 0x1f8fff60 with address of the patch
 	*(vu32 *)(0xabfbd8) = PATCH_START_ADDR;
 
@@ -60,12 +56,6 @@ int module_start(int argc, char *argv[])
 		printf(MODNAME ": Patch trigger successful: 0x%x\n", rv);
 	else
 		printf(MODNAME ": Patch trigger failed: 0x%x\n", rv);
-
-	printf(MODNAME ": Restoring original func ptr @ 0xabfbd8\n");
-
-	// Restore original func ptr for 0x1f8fff60
-	*(vu32 *)(0xabfbd8) = backup;
-
 	return MODULE_NO_RESIDENT_END;
 }
 
