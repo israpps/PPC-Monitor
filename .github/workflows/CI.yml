@@ -15,6 +15,7 @@ on:
     paths:
       - 'buildscripts/**'
       - 'patch/**'
+      - 'patch_loader_*/**'
   workflow_dispatch:
 
 jobs:
