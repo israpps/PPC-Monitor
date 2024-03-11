@@ -31,10 +31,12 @@ int main()
 	        MAJOR, MINOR, GITHASH);
 	int ret;
 	int id = SifExecModuleBuffer(ppcpatchman_irx, size_ppcpatchman_irx, 0, NULL, &ret);
-	DPRINTF("\t%s: %d %d   ", "PPCPATCHMAN.IRX", id, ret);
-	if (id < 0) {
-		scr_setfontcolor((id == -200) ? 0x0000ff : 0xffff00);  //-200 means a system module is missing :'(. make error more dramatic if so
+	DPRINTF("\t[%s] id:%d ret:%d   ", "PPCPATCHMAN", id, ret);
+	if (id < 0 || ret == -2) {
+		scr_setfontcolor((id == -200 || ret == -2) ? 0x0000ff : 0xffff00);  //-200 means a system module is missing :'(. make error more dramatic if so
 		DPRINTF("Failed to load\n");
+		if (id  == -200) {DPRINTF("\t\tSystem dependencies missing!!!\n");}
+		if (ret == -2)   {DPRINTF("\t\tThis PS2 is NOT a DECKARD model!!!\n");}
 		sleep(5);
 		return -1;
 	}
