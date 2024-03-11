@@ -14,23 +14,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ps2dev/ps2dev:latest
+    container: ghcr.io/akuhak/ps2homebrew:main
     steps:
 
-      - name: Install dependencies
-        run: |
-          apk add build-base git
-
-      - uses: actions/checkout@v3
-      - run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git fetch --prune --unshallow
-
-      - name: Compile PPC Toolchain
-        run: |
-          chmod +x ./buildscripts/toolchain/*.sh
-          ./buildscripts/toolchain/001-binutils.sh
-          ./buildscripts/toolchain/002-gcc-stage1.sh
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Compile build
         run: |
@@ -40,9 +29,12 @@ jobs:
         if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: PS2-Loader
+          name: PPC-Monitor
           path: |
-            patch_loader/bin/*.ELF
+            patch_loader_irx/irx/ppcpatchman.irx
+            patch_loader_ee/ee_loader.elf
+            patch/bin/patch.elf
+            patch/bin/patch.bin
 
       - name: Create release
         if: github.ref == 'refs/heads/main'
@@ -52,4 +44,5 @@ jobs:
           automatic_release_tag: "latest"
           title: "Latest development build"
           files: |
-            patch_loader/bin/*.ELF
+            patch_loader_irx/irx/ppcpatchman.irx
+            patch_loader_ee/ee_loader.elf
