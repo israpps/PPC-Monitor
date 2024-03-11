@@ -21,6 +21,8 @@ typedef struct pm_settings_t
 extern pm_settings_t pm_settings;
 
 /* Core functions */
+void pm_rx();
+
 void pm_start();
 
 /* Parser functions */

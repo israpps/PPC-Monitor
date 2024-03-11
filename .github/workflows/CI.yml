@@ -14,42 +14,59 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ps2dev/ps2dev:latest
+    container: ghcr.io/akuhak/ps2homebrew:main
     steps:
 
-      - name: Install dependencies
-        run: |
-          apk add build-base git
-
-      - uses: actions/checkout@v3
-      - run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git fetch --prune --unshallow
-
-      - name: Compile PPC Toolchain
-        run: |
-          chmod +x ./buildscripts/toolchain/*.sh
-          ./buildscripts/toolchain/001-binutils.sh
-          ./buildscripts/toolchain/002-gcc-stage1.sh
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Compile build
         run: |
           make clean all
 
+      - name: Pack binaries for formal release
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          mkdir -p release/raw_binaries
+          cp patch_loader_irx/irx/ppcpatchman.irx release/ppcpatchman.irx
+          cp patch_loader_ee/ee_loader.elf release/PPC-Monitor-Loader.elf
+          patch/bin/patch.elf release/raw_binaries/patch.elf
+          patch/bin/patch.bin release/raw_binaries/patch.bin
+          cp LICENSE release/LICENSE
+          cp README.md release/README.md
+
       - name: Upload artifacts
         if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: PS2-Loader
+          name: PPC-Monitor
           path: |
-            patch_loader/bin/*.ELF
+            patch_loader_irx/irx/ppcpatchman.irx
+            patch_loader_ee/ee_loader.elf
+            patch/bin/patch.elf
+            patch/bin/patch.bin
 
-      - name: Create release
+      - name: Create pre-release
         if: github.ref == 'refs/heads/main'
         uses: marvinpinto/action-automatic-releases@latest
         with:
+          prerelease: true
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           title: "Latest development build"
           files: |
-            patch_loader/bin/*.ELF
+            patch_loader_irx/irx/ppcpatchman.irx
+            patch_loader_ee/ee_loader.elf
+
+      - name: Create release with tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          prerelease: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          title: "Latest development build"
+          files: |
+            patch_loader_irx/irx/ppcpatchman.irx
+            patch_loader_ee/ee_loader.elf

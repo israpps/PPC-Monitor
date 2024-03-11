@@ -12,6 +12,17 @@
 
 #define SWAP_ENDIAN(x) ((((x) >> 24) & 0xFF) | (((x) & 0x00FF0000) >> 8) | (((x) & 0x0000FF00) << 8) | ((x) << 24))
 
+typedef struct debug_ppc_config_t
+{
+    uint8_t hooked; //whether IVOR15 hook is installed
+    uint8_t halted; //
+    uint8_t wb;     //watch(log) or break
+    uint8_t rw;     //read or write
+    uint32_t addr;
+}debug_ppc_config_t;
+
+extern debug_ppc_config_t debug_ppc_config;
+
 /* APU funcs from binary */
 extern uint32_t (*debug_reg_mips_gp_get)(uint32_t reg);
 extern uint32_t (*debug_reg_mips_hi_get)();
@@ -47,6 +58,7 @@ uint32_t debug_reg_ppc_get_msr();
 void debug_reg_dcr_set(uint16_t dcr, uint32_t value);
 void debug_reg_ppc_set(uint16_t gp, uint32_t value);
 void debug_reg_ppc_sp_set(uint16_t sp, uint32_t value);
+void debug_reg_ppc_set_msr(uint32_t value);
 
 //patch_type: PATCH_PREFIX, PATCH_POSTFIX, PATCH_REPLACE
 void debug_patch_dev_load(uint8_t patch_type, uint32_t addr, uint32_t len, void* func_ptr);
@@ -56,5 +68,8 @@ void debug_patch_dev_store(uint8_t patch_type, uint32_t addr, uint32_t len, void
 void debug_hook_reset();
 void debug_reset_handler();
 void debug_run_on_reset(void* func);
+
+void debug_hook_ivor15();
+int debug_ivor15_handler();
 
 #endif
