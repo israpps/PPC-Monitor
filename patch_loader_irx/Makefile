@@ -17,7 +17,7 @@ $(PATCH_DIR)/bin/patch.bin: $(PATCH_DIR)/bin/patch.elf
 	powerpc-ps2-eabi-objcopy -O binary $< $@
 
 patch.c: $(PATCH_DIR)/bin/patch.bin
-	$(PS2SDK)/bin/bin2s $< $@ patch_bin
+	$(PS2SDK)/bin/bin2c $< $@ patch_bin
 
 include $(PS2SDK)/Defs.make
 include $(PS2SDK)/samples/Makefile.pref

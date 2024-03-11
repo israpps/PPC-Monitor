@@ -18,7 +18,7 @@ EE_OBJS += $(EE_IRX_OBJS)
 
 # Where to find the IRX files
 vpath %.irx $(PS2SDK)/iop/irx/
-vpath %.irx $(ROOT_DIR)/../patch_loader/irx/
+vpath %.irx $(ROOT_DIR)/../patch_loader_irx/irx/
 
 # Rule to generate them
 %_irx.o: %.irx
