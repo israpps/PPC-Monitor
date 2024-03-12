@@ -6,4 +6,5 @@ nav_order: 1
 
 homebrew application operated via UART for the PowerPC CPU used by sony to replace the PS1 CPU on most slim models.
 
-![vid](https://github.com/israpps/PPC-Monitor/assets/57065102/d506caf2-66c3-40ce-9e31-06d1e50960dd)
+#### YouTube Showcase Video
+> [![Final video of fixing issues in your code in VS Code](https://img.youtube.com/vi/m-fnXXXwius/maxresdefault.jpg)](https://www.youtube.com/watch?v=m-fnXXXwius)
