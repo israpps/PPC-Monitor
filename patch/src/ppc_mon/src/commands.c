@@ -395,7 +395,7 @@ static int command_mips()
     } else if (*rw == 'r') {
         //GP
         if (reg_num != -1) {
-            value = debug_reg_mips_get(reg_num);
+            value = debug_reg_mips_gp_get(reg_num);
             printf("%.2i(%s): 0x%.8x\n", reg_num, mips_reg_names[reg_num], value);
         //Non-GP
         } else {
