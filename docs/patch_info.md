@@ -44,6 +44,22 @@ branch the address range is determined and the appropriate function is called
 | `A80000` - `ABFFFF`  | Load LUT         | (`0x3FFFF`) 262.143 KB |
 | `AC0000` - `AFFFFF`  | Store LUT        | (`0x3FFFF`) 262.143 KB |
 
+<details markdown="block">
+  <summary>
+    Graph
+  </summary>
+  
+```mermaid
+pie showData title PPC RAM Usage (bytes)
+    "DECKARD ELF code" : 57764
+    "DECKARD ELF data" : 7768
+    "Unused gap" : 458752
+    "Load LUT" : 262143
+    "Store LUT" : 262143
+```
+
+</details>
+
 ## After Patch:
 
 |     Address Range     |     Function     |         Size          |
@@ -53,6 +69,23 @@ branch the address range is determined and the appropriate function is called
 | `A10000` - `A11FFF`   | Load LUT         | (`0x2000`)  8.192kb   |
 | `A12000` - `A13FFF`   | Store LUT        | (`0x2000`)  8.192kb   |
 | `A14000` - `AFFFFF`   | Unused           | (`0xEBFFF`) 966.655KB |
+
+
+<details markdown="block">
+  <summary>
+    Graph
+  </summary>
+  
+```mermaid
+pie showData title PPC RAM Usage (bytes)
+    "DECKARD ELF code" : 57764
+    "DECKARD ELF data" : 7768
+    "Load LUT" : 8192
+    "Store LUT" : 8192
+    "Free memory (gap + LUT recovered space)" : 966655
+```
+
+</details>
 
 Additionally, the patch starts PPC-Monitor a simple serial debugging tool that
 runs in the background using the emulators event system.
