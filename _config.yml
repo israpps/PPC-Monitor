@@ -18,7 +18,10 @@ kramdown:
   syntax_highlighter_opts:
     block:
       line_numbers: false
-
+      
+mermaid:
+  version: "10.9.0" # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
+  
 callouts_level: quiet # or loud
 callouts:
   highlight:
