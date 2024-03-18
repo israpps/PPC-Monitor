@@ -8,11 +8,13 @@ color_scheme: dark
 #  Download PowerPC Monitor: https://github.com/israpps/PPC-Monitor/releases
 
 
-#nav_external_links:
-#  - title: Download PowerPC Monitor
-#    url: https://github.com/israpps/PPC-Monitor/releases
-#  - title: PowerPC Monitor Source Code
-#    url: https://github.com/israpps/PPC-Monitor/
+nav_external_links:
+  - title: Download Nightly build
+    url: https://github.com/israpps/PPC-Monitor/releases/tag/latest
+  - title: Download Latest Release
+    url: https://github.com/israpps/PPC-Monitor/releases/latest
+  - title: Source code
+    url: https://github.com/israpps/PPC-Monitor/archive/refs/heads/main.zip
 
 kramdown:
   syntax_highlighter_opts:
