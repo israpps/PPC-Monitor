@@ -12,11 +12,12 @@ The PPC-IOP UART RX and TX are accessible through an unpopulated connector footp
 D E C K A R D compiled $date
 ```
 
-UART location on SCHP-75K (GH-040-??):
-![nox_75K](https://github.com/qnox32/PPC-IOP/assets/123997012/966b0516-266d-4504-8871-a3fbcb9a1aa4)
+## UART location on `SCPH-75xxx` (`GH-040-??`):
 
+![nox_75K](https://github.com/israpps/PPC-Monitor/blob/gh_pages/pictures/GH-040_nox_UART-DIAGRAM.jpg?raw=true)
+> Photo credit: Nox
 
-UART location on SCHP-75K (GH-037-12):
-![el_isra_75k](https://github.com/qnox32/PPC-IOP/assets/123997012/978b56cb-d2df-444b-9fc7-a79a946ff1c1)
+## UART location on `SCPH-75xxx` (`GH-037-12`):
+![el_isra_75k](https://github.com/israpps/PPC-Monitor/blob/gh_pages/pictures/GH-037-12_isra_UART-DIAGRAM.png?raw=true)
 
-Photo credit: [El Isra](https://github.com/israpps)
+> Photo credit: [El Isra](https://github.com/israpps)
