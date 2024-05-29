@@ -18,7 +18,7 @@ The Auxiliary Processing Unit (APU) consists of a MIPS instruction decoder, GTE,
 capable of independently performing arithmetic and logic operations, as well as moving data within the same register file.
 However, it lacks the ability to fetch its own instructions or directly access memory in any way. All fetch, load, store,
 branch, division, and multiplication operations require assistance from PPC code. To facilitate data transfer between 
-the APU and PPC core, a set of custom instructions is utilized (see APU_opcodes.txt). The APU operates at the same 
+the APU and PPC core, a set of custom instructions is utilized (see [APU Opcodes](./docs/APU/APU_opcodes.md)). The APU operates at the same 
 clock speed as the PPC core (440MHz), and the timing of the original MIPS-IOP / PS1 is emulated through a software 
 timing/event system. For every 1 MIPS instruction to execute, x number of PPC instructions must also be executed. 
 Consequently, there are some operations, that under certain conditions may take longer to complete on the PPC-IOP 
@@ -26,7 +26,7 @@ due to the length of the code path the emulator must take.
 
 ### Geometry Transformation Engine (GTE)
 The GTE is also a part of the APU. In addition to the normal 0-63 GTE registers, there's an instruction register, 
-execution status register, and cycle count register. (see APU_registers.txt) Instructions and data are copied from the
+execution status register, and cycle count register. (see [APU Registers](./docs/APU/APU_registers.md)) Instructions and data are copied from the
 MIPS register file to the GTE register file via PPC code. Some instructions appear to be modified by the PPC prior 
 to being copied over. Currently unknown how and why. The cycle count register contains the number of cycles the last
 executed GTE instruction would take on a real PS1/MIPS-IOP, this value is retrieved and then subtracted from the 
@@ -38,7 +38,7 @@ the "DECKARD" emulator. The emulator code and data only take up 65KB. The majori
 lookup tables, each 262KB in size. These LUTs contain function pointers to load and store functions for devices/addresses
 in the `0x1f801000` - `0x1f900fff` range. It's possible this approach was chosen because it's faster than doing multiple
 compares on an address and then branching to the appropriate function. Since nothing exists between `0x1F808600` - `0x1F900000`,
-there is a significant amount of unused space in each table. The patch provided makes use of this unused space (see patch_info.txt).
+there is a significant amount of unused space in each table. The patch provided makes use of this unused space (see [Patch Info](./docs/patch_info.md)).
 Additionally, there are no sanity checks on reads or writes within the `A00000`-`BFFFFF` address range, allowing any 
 IOP module running on a PPC-IOP PS2 to read and write to this region. `B00000` - `BFFFFF` are mapped as non executable.
 
@@ -93,4 +93,4 @@ When the MIPS cycle count register reaches zero or an interrupt occurs, and the 
 Interrupts are partially emulated. Values written to I_MASK are always AND'd with `0xf900008c`. It's assumed that only values within the `0xf900008c` mask can be written to the INTC from the PPC-IOP. The INTC feeds interrupts into the APU status register `0x4` bit 16. When this bit is set the APU will not decode/execute any instruction it's given, will not increment PC, will not decrement cycle counter, and will set the instruction type flag to zero when given the next instruction. This will cause the PPC to break out of the main emulation loop to handle the interrupt. The MIPS PC register only increments on its own, requiring the PPC to manually set it to the interrupt handler address. Emulated copies of I_MASK, I_STAT, and I_CTRL are used to swap bit 13 and 26 (Dev 9) among other things that are currently unknown. 
 
 ### XPARAMS
-XPARAMs are used to control various properties of the emulator and improve compatibility. Normally XPARAMs are provided by the game disc and loaded into memory using the XPARAM IOP module. However, they exist within a struct in memory and can be manipulated directly. See XPARAMs.txt for more details.
+XPARAMs are used to control various properties of the emulator and improve compatibility. Normally XPARAMs are provided by the game disc and loaded into memory using the XPARAM IOP module. However, they exist within a struct in memory and can be manipulated directly. See [XPARAM](./docs/XPARAM.md) for more details.
