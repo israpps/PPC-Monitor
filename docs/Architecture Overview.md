@@ -8,7 +8,7 @@ nav_order: 2
 This document aims to provide a high-level overview of the PPC-IOP ASIC and is currently a work in progress. Some of the information here may be inaccurate or incomplete.
 
 ## Overview
-The PPC-IOP ASIC, present in SCHP-75K and newer PS2 models, features a hybrid hardware and software approach to 
+The PPC-IOP ASIC, present in `SCPH-75xxx` and newer PS2 models, features a hybrid hardware and software approach to 
 emulating the MIPS R3000A processor found in the PS1 and 70K or older PS2 models. The hardware portion of this emulation
 comes in the form of an Auxiliary Processing Unit or APU attached to a PPC 440 core clocked at 440MHz. 
 The software portion comes in the form of the "DECKARD" emulation software.
