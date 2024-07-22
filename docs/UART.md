@@ -21,3 +21,12 @@ D E C K A R D compiled $date
 ![el_isra_75k](https://github.com/israpps/PPC-Monitor/blob/gh_pages/pictures/GH-037-12_isra_UART-DIAGRAM.png?raw=true)
 
 > Photo credit: [El Isra](https://github.com/israpps)
+
+
+## Using the UART from an application
+
+The PowerPC UART TX/RX registers are accessible from both EE and IOP.
+
+The TX reg corresponds to the address `0x1F80380C`
+
+On latest PS2SDK, you already have available an IRX module that will redirect stdout to the UART. it is located on `$PS2SDK/iop/irx/ppctty.irx`
