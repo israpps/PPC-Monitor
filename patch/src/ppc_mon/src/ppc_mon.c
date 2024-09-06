@@ -84,7 +84,7 @@ static int ascii_hex_to_int(char *str)
 int pm_parser_get_argc()
 {
 	int argc = 1;
-    char *str = &rx_buf;
+    char *str = rx_buf;
 
 	while (*str != '\0') {
 		//Ignore extra whitespace
@@ -102,7 +102,7 @@ int pm_parser_get_argv_len(int n)
 	uint32_t arg = 0;
 	uint32_t len = 0;
 
-    char *str = &rx_buf;
+    char *str = rx_buf;
 
 	while (*str != '\0')
 	{
@@ -126,7 +126,7 @@ char *pm_parser_get_argv_ptr(int n)
 	uint32_t arg = 0;
 	uint32_t pos = 0;
 
-    char *str = &rx_buf;
+    char *str = rx_buf;
 
 	while (*str != '\0')
 	{
@@ -150,7 +150,7 @@ int pm_parser_get_argv_dec(int n)
 	uint32_t argc = 0;
 	uint32_t value = 0;
 
-    char *str = &rx_buf;
+    char *str = rx_buf;
 
 	while (*str != '\0')
 	{
@@ -360,7 +360,7 @@ void pm_rx()
             add_event(pm_settings.event_cycles, &pm_rx, 0);
 
         //Poll UART status register
-        while (*(uint8_t*)(0x01000205) & 1 != 0) {
+        while ((*(uint8_t*)(0x01000205) & 1) != 0) {
 
             //Read char from UART FIFO
             c = *(char*)(0x01000200);
@@ -478,7 +478,7 @@ void pm_start()
     debug_uart_init(pm_settings.baud);
 
     //Register PPC-MON core commands, mem, reg, mips, etc
-    pm_register_cmds(&pm_core_cmds, 12);
+    pm_register_cmds(pm_core_cmds, 12);
 
 	//Preserve PPC-MON RX event through mode reset (PS2 <-> PS1)
 	debug_run_on_reset(&pm_rx); 

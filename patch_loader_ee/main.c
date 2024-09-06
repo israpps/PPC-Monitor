@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <debug.h>
 #include <iopcontrol.h>
+#include <iopheap.h>
 #include <sifrpc.h>
 #include <tamtypes.h>
 #include <loadfile.h>
 #include <sbv_patches.h>
+#include <unistd.h>
+#include <kernel.h>
+#include <ps2sdkapi.h>
 
 extern unsigned char ppcpatchman_irx[];
 extern unsigned int size_ppcpatchman_irx;

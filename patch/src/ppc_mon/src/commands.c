@@ -106,12 +106,10 @@ static int command_mem()
 
             counter++;
         } while (counter < len);
-
-    } else {
-        printf("Invalid action: %c\n", *rw);
-        return -1;
     }
 
+	printf("Invalid action: %c\n", *rw);
+	return -1;
 }
 
 /* Reg commands:
@@ -255,13 +253,10 @@ static int command_reg()
 
             counter++;
         } while (counter < len);
+	}
 
-    } else {
-       printf("Invalid action: %c\n", *rw);
-       return -1;
-    }
-
-
+	printf("Invalid action: %c\n", *rw);
+	return -1;
 }
 
 /* Dump commands:
@@ -663,7 +658,7 @@ static int command_gte()
     char *rw = pm_parser_get_argv_ptr(1);
     char *reg = pm_parser_get_argv_ptr(2);
 
-    uint32_t value = pm_parser_get_argv_ptr(3);
+    uint32_t value = pm_parser_get_argv_dec(3);
     uint32_t reg_num = 0;
     uint32_t readback = 0;
 
@@ -811,7 +806,7 @@ static int command_gte()
 static int command_xparam()
 {
     //TEMP:
-    void *xparam_str_ptr = 0xbe0a30;
+    void *xparam_str_ptr = (void *)0xbe0a30;
 
     char *rw = pm_parser_get_argv_ptr(1);
     uint32_t num = pm_parser_get_argv_dec(2);
@@ -841,10 +836,10 @@ static int command_xparam()
         } else {
             printf("XPARAM %i does not exist\n", num);
         }
-    } else {
-        printf("Invalid action: %c\n", *rw);
-        return -1;
-    }
+	}
+
+	printf("Invalid action: %c\n", *rw);
+	return -1;
 }
 
 /* Emulator commands:
@@ -1148,10 +1143,10 @@ static int command_settings()
         default:
             break;
         }
-    } else {
-        printf("Invalid action %c\n", *drw);
-        return -1;
-    }
+	}
+	
+    printf("Invalid action %c\n", *drw);
+	return -1;
 }
 
 /* TODO: PPC core commands:
@@ -1205,11 +1200,10 @@ static int command_ppc()
     } else if (*drw == 'r') {
 
     } else if (*drw == 'w') {
+	}
 
-    } else {
-        printf("Invalid action: %c\n", *drw);
-        return -1;
-    }
+	printf("Invalid action: %c\n", *drw);
+	return -1;
 }
 
 /* Debug commands:
@@ -1220,7 +1214,7 @@ static int command_ppc()
 *  arg2: <r|w|b>
 *  arg3: <address>
 */
-static void command_debug()
+static int command_debug()
 {
     char *action = pm_parser_get_argv_ptr(1);
     char *option = pm_parser_get_argv_ptr(2);
@@ -1286,6 +1280,8 @@ static void command_debug()
     default:
         break;
     }
+
+    return 0;
 }
 
 pm_cmd_t pm_core_cmds[] = {
@@ -1398,7 +1394,7 @@ pm_cmd_t pm_core_cmds[] = {
     },
     {
         .name = "debug",
-        .help = "debug <w|b> <r|w|b> <address>",
+        .help = "debug <w|b> <r|w|b> <address>\n"
                 "debug <c>",
         .func = &command_debug
     }
