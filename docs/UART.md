@@ -22,6 +22,10 @@ D E C K A R D compiled $date
 
 > Photo credit: [El Isra](https://github.com/israpps)
 
+## UART location on late `SCPH-90xxx` (`GH-071`/`GH-072`)
+![late_90k_tschicki](https://github.com/israpps/PPC-Monitor/blob/gh_pages/pictures/late_90k.png?raw=true)
+
+> Photo creadit tsichiki
 
 ## Using the UART from an application
 
